@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function(){
     this.fontSize = fontSize;
   }
 
-  DomElement.prototype.createElem = function(){
+  DomElement.prototype.createElem = function() {
     if (this.selector[0] === '.') {
       console.log('this.selector: ', this.selector);
       let div = document.createElement('div');
@@ -22,14 +22,33 @@ document.addEventListener('DOMContentLoaded', function(){
       div.style.alignItems = 'center';
       div.style.justifyContent = 'center';
       div.style.margin = 'auto';
+      div.style.position = 'absolute';
       div.innerText = 'Test is div';
       document.body.append(div);
+      document.addEventListener('keydown', function(e) {
+        if (e.keyCode == 37) { // left arrow
+          div.style.right = '10px';
+          div.style.left = '-10px';
+        } else if (e.keyCode == 38) { // up arrow
+          div.style.bottom = '10px';
+          div.style.top = '-10px';
+
+        } else if (e.keyCode == 39) { // right arrow
+          div.style.left = '10px';
+          div.style.right = '-10px';
+
+        } else if (e.keyCode == 40) { // down arrow
+          div.style.top = '10px';
+          div.style.bottom = '-10px';
+        }
+        
+      });
     }
     if(this.selector[0] === '#'){
       console.log('this.selector: ', this.selector);
       let p = document.createElement('p');
       p.id = `${this.selector.slice(1, this.selector.length)}`;
-      console.log('p.idName : ', p.idName );
+      console.log('p.idName : ', p.id );
       p.style.height = this.height;
       p.style.width = this.width;
       p.style.background = this.bg;
@@ -39,13 +58,17 @@ document.addEventListener('DOMContentLoaded', function(){
       p.style.alignItems = 'center';
       p.style.justifyContent = 'center';
       p.style.margin = 'auto';
+      p.style.position = 'absolute';
       p.innerText = 'Test is paragraph';
       document.body.append(p);
+
     }
   };
-  let domElem1 = new DomElement ('#block', '200px', '200px', '#fcb58a', '28px');
+  let domElem1 = new DomElement ('.block', '100px', '100px', '#fcb58a', '28px');
   console.log('domElem1: ', domElem1);
 
   domElem1.createElem();
   console.log('isPrototypeOf: ', DomElement.prototype.isPrototypeOf(domElem1));
-})
+
+  
+});

@@ -25,24 +25,7 @@ document.addEventListener('DOMContentLoaded', function(){
       div.style.position = 'absolute';
       div.innerText = 'Test is div';
       document.body.append(div);
-      document.addEventListener('keydown', function(e) {
-        if (e.keyCode == 37) { // left arrow
-          div.style.right = '10px';
-          div.style.left = '-10px';
-        } else if (e.keyCode == 38) { // up arrow
-          div.style.bottom = '10px';
-          div.style.top = '-10px';
-
-        } else if (e.keyCode == 39) { // right arrow
-          div.style.left = '10px';
-          div.style.right = '-10px';
-
-        } else if (e.keyCode == 40) { // down arrow
-          div.style.top = '10px';
-          div.style.bottom = '-10px';
-        }
-        
-      });
+      
     }
     if(this.selector[0] === '#'){
       console.log('this.selector: ', this.selector);
@@ -70,5 +53,29 @@ document.addEventListener('DOMContentLoaded', function(){
   domElem1.createElem();
   console.log('isPrototypeOf: ', DomElement.prototype.isPrototypeOf(domElem1));
 
-  
+  document.addEventListener('keydown', function(e) {
+    let tagClass = document.getElementsByClassName('block')[0];
+    let cs = window.getComputedStyle(tagClass);
+    let keyleft = parseInt(cs.left);
+    let keyUp = parseInt(cs.top);
+    switch(e.keyCode){
+      case 37:
+        if (keyleft > 0) // если нажата клавиша влево
+          tagClass.style.left = keyleft - 10 + 'px';
+          break;
+      case 38:
+        if (keyUp > 0) // если нажата клавиша вверх
+          tagClass.style.top = keyUp - 10 + 'px';
+          break;
+      case 39:   // если нажата клавиша вправо
+        if(keyleft < document.documentElement.clientWidth - 100)
+          tagClass.style.left = keyleft + 10 + 'px';
+          break;
+      case 40:   // если нажата клавиша вниз
+          if(keyUp < document.documentElement.clientHeight - 100)
+          tagClass.style.top = keyUp + 10 + 'px';
+          break;
+    }
+    
+  });
 });

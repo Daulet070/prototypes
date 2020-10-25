@@ -1,4 +1,11 @@
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function () {
+  // Входные данные
+  let selectorValue = prompt('Введите class через "." или id через "#" (без ковычек)', '.block');
+  let heightValue = prompt('Введите высоту квадрата. Например: 200px', '200px');
+  let widthValue = prompt('Введите ширину квадрата. Например: 200px', '200px');
+  let bgColorValue = prompt('Введите цвет фона квадрата HEX кодом Например: "#00FF7F"', '#fcb58a');
+
+  // Класс
   function DomElement (selector, height, width, bg, fontSize) {
     this.selector = selector;
     this.height = height;
@@ -7,45 +14,74 @@ document.addEventListener('DOMContentLoaded', function(){
     this.fontSize = fontSize;
   }
 
-  DomElement.prototype.createElem = function(){
+  // Объект на основе класса
+  let domElem1 = new DomElement (selectorValue, heightValue, widthValue, bgColorValue, '28px');
+
+  // Новый метод класса
+  DomElement.prototype.createElem = function() {
+    let tagSelectors = this.selector;
+
     if (this.selector[0] === '.') {
-      console.log('this.selector: ', this.selector);
-      let div = document.createElement('div');
-      div.className = `${this.selector.slice(1, this.selector.length)}`;
-      console.log('div.className: ', div.className);
-      div.style.height = this.height;
-      div.style.width = this.width;
-      div.style.background = this.bg;
-      div.style.fontSize = this.fontSize;
-      div.style.textAlign = 'center';
-      div.style.display = 'flex';
-      div.style.alignItems = 'center';
-      div.style.justifyContent = 'center';
-      div.style.margin = 'auto';
-      div.innerText = 'Test is div';
-      document.body.append(div);
+
+      tag = document.createElement('div');
+      tag.className = `${this.selector.slice(1, this.selector.length)}`;
     }
-    if(this.selector[0] === '#'){
-      console.log('this.selector: ', this.selector);
-      let p = document.createElement('p');
-      p.id = `${this.selector.slice(1, this.selector.length)}`;
-      console.log('p.idName : ', p.idName );
-      p.style.height = this.height;
-      p.style.width = this.width;
-      p.style.background = this.bg;
-      p.style.fontSize = this.fontSize;
-      p.style.textAlign = 'center';
-      p.style.display = 'flex';
-      p.style.alignItems = 'center';
-      p.style.justifyContent = 'center';
-      p.style.margin = 'auto';
-      p.innerText = 'Test is paragraph';
-      document.body.append(p);
+    if (this.selector[0] === '#') {
+
+      tag = document.createElement('p');
+      tag.id = `${this.selector.slice(1, this.selector.length)}`;
     }
+
+    tag.style.cssText = `height: ${this.height};
+                         width: ${this.width};
+                         background: ${this.bg};
+                         font-size: ${this.fontSize};
+                         text-align: center;
+                         margin: 10px;
+                         display: flex;
+                         align-items: center;
+                         justify-content: center;
+                         position: absolute;`
+
+    if (this.selector === '#' + selectorValue.slice(1, selectorValue.length)) {
+      let tagCode = 'paragraph';
+      tag.innerText = 'Test is ' + tagCode;
+    }
+    if (this.selector === '.' + selectorValue.slice(1, selectorValue.length)) {
+      let tagCode = 'div';
+      tag.innerText = 'Test is ' + tagCode;
+    }
+    
+    document.body.append(tag);
+
+    document.addEventListener('keydown', function(e) {
+      let tagClassOrId = document.querySelector(tagSelectors);
+      let cs = window.getComputedStyle(tagClassOrId);
+      let keyleft = parseInt(cs.left);
+      let keyUp = parseInt(cs.top);
+
+      switch(e.keyCode){
+        case 37:
+          if (keyleft > 0) // если нажата клавиша влево
+            tagClassOrId.style.left = keyleft - 10 + 'px';
+            break;
+        case 38:
+          if (keyUp > 0) // если нажата клавиша вверх
+            tagClassOrId.style.top = keyUp - 10 + 'px';
+            break;
+        case 39:   // если нажата клавиша вправо
+          if(keyleft < document.documentElement.clientWidth - 100)
+            tagClassOrId.style.left = keyleft + 10 + 'px';
+            break;
+        case 40:   // если нажата клавиша вниз
+            if(keyUp < document.documentElement.clientHeight - 100)
+            tagClassOrId.style.top = keyUp + 10 + 'px';
+            break;
+      }
+      
+    });
   };
-  let domElem1 = new DomElement ('#block', '200px', '200px', '#fcb58a', '28px');
-  console.log('domElem1: ', domElem1);
 
   domElem1.createElem();
-  console.log('isPrototypeOf: ', DomElement.prototype.isPrototypeOf(domElem1));
-})
+
+});

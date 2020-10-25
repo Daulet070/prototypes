@@ -21,15 +21,15 @@ document.addEventListener('DOMContentLoaded', function () {
   DomElement.prototype.createElem = function() {
     let tagSelectors = this.selector;
 
-    if (this.selector[0] === '.') {
+    if (tagSelectors[0] === '.') {
 
       tag = document.createElement('div');
-      tag.className = `${this.selector.slice(1, this.selector.length)}`;
+      tag.className = `${tagSelectors.slice(1, tagSelectors.length)}`;
     }
     if (this.selector[0] === '#') {
 
       tag = document.createElement('p');
-      tag.id = `${this.selector.slice(1, this.selector.length)}`;
+      tag.id = `${tagSelectors.slice(1, tagSelectors.length)}`;
     }
 
     tag.style.cssText = `height: ${this.height};
@@ -43,11 +43,11 @@ document.addEventListener('DOMContentLoaded', function () {
                          justify-content: center;
                          position: absolute;`
 
-    if (this.selector === '#' + selectorValue.slice(1, selectorValue.length)) {
+    if (tagSelectors === '#' + selectorValue.slice(1, selectorValue.length)) {
       let tagCode = 'paragraph';
       tag.innerText = 'Test is ' + tagCode;
     }
-    if (this.selector === '.' + selectorValue.slice(1, selectorValue.length)) {
+    if (tagSelectors === '.' + selectorValue.slice(1, selectorValue.length)) {
       let tagCode = 'div';
       tag.innerText = 'Test is ' + tagCode;
     }
